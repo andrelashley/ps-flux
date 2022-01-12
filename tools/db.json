@@ -1,0 +1,34 @@
+{
+  "courses": [
+    {
+      "id": 11,
+      "slug": "beginner-html",
+      "title": "Beginner HTML",
+      "authorId": 1,
+      "category": "Front-End Web Development",
+      "createdAt": 1641955179566
+    },
+    {
+      "id": 12,
+      "slug": "javascript-fundamentals",
+      "title": "Javascript Fundamentals",
+      "authorId": 2,
+      "category": "Front-End Web Development",
+      "createdAt": 1641955502374
+    }
+  ],
+  "authors": [
+    {
+      "id": 1,
+      "name": "Cory House"
+    },
+    {
+      "id": 2,
+      "name": "Scott Allen"
+    },
+    {
+      "id": 3,
+      "name": "Dan Wahlin"
+    }
+  ]
+}
