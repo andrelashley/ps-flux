@@ -10,8 +10,10 @@ function CoursesPage() {
 
     useEffect(() => {
         courseStore.addChangeListener(onChange);
-        if(courseStore.getCourses().length === 0) loadCourses();
-        return () => courseStore.removeChangeListener(onChange);
+        if(courseStore.getCourses().length === 0) {
+            loadCourses();
+        }
+        return () => { courseStore.removeChangeListener(onChange); }
     }, []);
 
     function onChange() {

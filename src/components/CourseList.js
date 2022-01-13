@@ -9,7 +9,7 @@ function CourseList(props) {
                 <tr>
                     <th>&nbsp;</th>
                     <th>Title</th>
-                    <th>Author ID</th>
+                    <th>Author</th>
                     <th>Category</th>
                 </tr>
             </thead>
@@ -19,7 +19,7 @@ function CourseList(props) {
                         <tr key={course.id}>
                             <td><button className='btn btn-outline-danger' onClick={() => props.deleteCourse(course.id)}>Delete</button></td>
                             <td><Link to={"/course/" + course.slug}>{course.title}</Link></td>
-                            <td>{course.authorId}</td>
+                            <td>{course.authorName}</td>
                             <td>{course.category}</td>
                         </tr>
                     );
@@ -33,12 +33,13 @@ CourseList.propTypes = {
     deleteCourse: PropTypes.func.isRequired,
     courses: PropTypes.arrayOf(
         PropTypes.shape({
-            id: PropTypes.string.isRequired,
+            id: PropTypes.number.isRequired,
             title: PropTypes.string.isRequired,
             authorId: PropTypes.number.isRequired,
+            authorName: PropTypes.string.isRequired,
             category: PropTypes.string.isRequired
         })
-    ).isRequired
+    ).isRequired,
 };
 
 CourseList.defaultProps = {

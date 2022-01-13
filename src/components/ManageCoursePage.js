@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import CourseForm from './CourseForm';
 import courseStore from "../stores/courseStore";
+import authorStore from "../stores/authorStore";
 import { toast } from 'react-toastify';
 import * as courseActions from "../actions/courseActions";
+import * as authorActions from "../actions/authorActions";
 
 const ManageCoursePage = props => {
     const [errors, setErrors] = useState({});
     const [courses, setCourses] = useState(courseStore.getCourses());
+    const [authors, setAuthors] = useState(authorStore.getAuthors());
     const [course, setCourse] = useState({
         id: null,
         slug: "",
@@ -17,17 +20,23 @@ const ManageCoursePage = props => {
 
     useEffect(() => {
         courseStore.addChangeListener(onChange);
+        authorStore.addChangeListener(onChange);
         const slug = props.match.params.slug;
         if(courses.length === 0) {
             courseActions.loadCourses();
+            authorActions.loadAuthors();
         } else if (slug) {
-            setCourse(courseStore.getCourseBySlug(slug));
+            const selectedCourse = courseStore.getCourseBySlug(slug);
+            if(!selectedCourse) props.history.push("/not-found"); // go to the error page if the selected course was not found
+            authorActions.loadAuthors();
+            setCourse(selectedCourse);
         }
-        return () => courseStore.removeChangeListener(onChange);
-    }, [courses.length, props.match.params.slug]);
+        return () => { courseStore.removeChangeListener(onChange); authorStore.removeChangeListener(onChange); }
+    }, [courses.length, props.match.params.slug, authors.length]);
 
     function onChange() {
         setCourses(courseStore.getCourses());
+        setAuthors(authorStore.getAuthors());
     }
 
     function handleChange({ target }) {
@@ -58,7 +67,7 @@ const ManageCoursePage = props => {
     return (
         <>
             <h2>Manage Course</h2>
-            <CourseForm errors={errors} course={course} onChange={handleChange} onSubmit={handleSubmit} />
+            <CourseForm errors={errors} course={course} authors={authors} onChange={handleChange} onSubmit={handleSubmit} />
         </>
     );
 }

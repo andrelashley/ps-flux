@@ -1,5 +1,6 @@
 import dispatcher from '../appDispatcher';
 import * as courseApi from '../api/courseApi';
+import * as authorApi from '../api/authorApi';
 import actionTypes from './actionTypes';
 
 export function saveCourse(course) {
@@ -13,17 +14,25 @@ export function saveCourse(course) {
 
 export function loadCourses() {
     return courseApi.getCourses().then(courses => {
-        dispatcher.dispatch({
-            actionType: actionTypes.LOAD_COURSES,
-            courses
+        authorApi.getAuthors().then(authors => {
+
+            courses.forEach(course => {
+                course.authorName = authors.find(author => author.id === course.authorId).name;
+            });
+
+            dispatcher.dispatch({
+                actionType: actionTypes.LOAD_COURSES,
+                courses
+            });
         });
+
     });
 }
 
 export function deleteCourse(id) {
     return courseApi.deleteCourse(id).then(() => {
         dispatcher.dispatch({
-            actionType: actionTypes.DELETE_COUSE,
+            actionType: actionTypes.DELETE_COURSE,
             id
         });
     });
